@@ -12,7 +12,7 @@ export const ConfirmButton: React.FC<ConfirmButtonProps> = ({
                                                                 onClick,
                                                                 disabled = false,
                                                                 loading = false,
-                                                                children = "Confirm"
+                                                                children = "Подтвердить"
                                                             }) => {
     return (
         <button

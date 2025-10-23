@@ -3,15 +3,14 @@ import "./RegistrationForm.css";
 import EyeOpen from "../assets/icons/eye.svg";
 import EyeClosed from "../assets/icons/hide_eye.svg";
 import ConfirmButton from "./shared/Buttons/ConfirmButton";
+
 export const RegistrationForm: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [password, setPassword] = useState("");
     const [formData, setFormData] = useState({
         username: "",
-        age: "",
-        lifestyle: "",
-        height: "",
-        weight: ""
+        email: "", // ← ДОБАВЛЕНО ОТДЕЛЬНОЕ ПОЛЕ ДЛЯ EMAIL
+
     });
 
     const togglePasswordVisibility = () => {
@@ -43,27 +42,38 @@ export const RegistrationForm: React.FC = () => {
     return (
         <div className="registration-container">
             <div className="registration-box">
-                <h2 className="registration-title">Registration</h2>
+                <h2 className="registration-title">Регистрация</h2>
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label className="input-label">Email:</label>
+                        <label className="input-label">Логин:</label>
                         <input
                             type="text"
                             className="input-field"
-                            placeholder="Email"
+                            placeholder="Логин"
                             value={formData.username}
                             onChange={(e) => handleInputChange("username", e.target.value)}
                         />
                     </div>
 
                     <div className="form-group">
-                        <label className="input-label">Password:</label>
+                        <label className="input-label">Почта:</label>
+                        <input
+                            type="email" // ← ИЗМЕНЕНО НА type="email"
+                            className="input-field"
+                            placeholder="Почта"
+                            value={formData.email} // ← ИСПОЛЬЗУЕТ formData.email
+                            onChange={(e) => handleInputChange("email", e.target.value)} // ← СОХРАНЯЕТ В "email"
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label className="input-label">Пароль:</label>
                         <div className="password-input-container">
                             <input
                                 type={showPassword ? "text" : "password"}
                                 className="input-field password-field"
-                                placeholder="Password"
+                                placeholder="Пароль"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
@@ -87,53 +97,6 @@ export const RegistrationForm: React.FC = () => {
                                 </div>
                             )}
                         </div>
-                    </div>
-
-                    <div className="form-group">
-                        <label className="input-label">Age:</label>
-                        <input
-                            type="number"
-                            className="input-field"
-                            placeholder="20"
-                            value={formData.age}
-                            onChange={(e) => handleInputChange("age", e.target.value)}
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label className="input-label">Lifestyle:</label>
-                        <select
-                            className="input-field select-field"
-                            value={formData.lifestyle}
-                            onChange={(e) => handleInputChange("lifestyle", e.target.value)}
-                        >
-                            <option value="">Select lifestyle</option>
-                            <option value="low">Low</option>
-                            <option value="medium">Medium</option>
-                            <option value="high">High</option>
-                        </select>
-                    </div>
-
-                    <div className="form-group">
-                        <label className="input-label">Height:</label>
-                        <input
-                            type="number"
-                            className="input-field"
-                            placeholder="175"
-                            value={formData.height}
-                            onChange={(e) => handleInputChange("height", e.target.value)}
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label className="input-label">Weight:</label>
-                        <input
-                            type="number"
-                            className="input-field"
-                            placeholder="73"
-                            value={formData.weight}
-                            onChange={(e) => handleInputChange("weight", e.target.value)}
-                        />
                     </div>
 
                     <div className="divider"></div>

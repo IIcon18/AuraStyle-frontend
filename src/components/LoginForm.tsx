@@ -39,11 +39,11 @@ const LoginForm: React.FC = () => {
                 <div className="login-form">
                     {/* Email Section */}
                     <div className="login-form-group">
-                        <label className="login-input-label">Email:</label>
+                        <label className="login-input-label">Почта/логин:</label>
                         <input
                             type="text"
                             className="login-input-field"
-                            placeholder="Email"
+                            placeholder="Почта"
                             value={formData.username}
                             onChange={(e) => handleInputChange("username", e.target.value)}
                         />
@@ -51,12 +51,12 @@ const LoginForm: React.FC = () => {
 
                     {/* Password Section */}
                     <div className="login-form-group">
-                        <label className="login-input-label">Password:</label>
+                        <label className="login-input-label">Пароль:</label>
                         <div className="login-password-input-container">
                             <input
                                 type={showPassword ? "text" : "password"}
                                 className="login-password-field"
-                                placeholder="Password"
+                                placeholder="Пароль"
                                 value={formData.password}
                                 onChange={(e) => handleInputChange("password", e.target.value)}
                             />

@@ -1,8 +1,8 @@
 .confirm-button {
     width: 45%;
     padding: 14px;
-    background: #1f7a29;
-    color: white;
+    background: #E3FBA7;
+    color: black;
     border: none;
     border-radius: 6px;
     font-size: 14px;
@@ -14,11 +14,12 @@
     align-items: center;
     justify-content: center;
     gap: 3px;
-    margin-left: 130px;
+    margin-left: 105px;
+    margin-top: 30px;
 }
 
 .confirm-button:hover {
-    background: #008115;
+    background: #E3FBA7;
 }
 
 .confirm-button:disabled {
@@ -35,7 +36,7 @@
     margin-left: 0;
     width: 16px;
     height: 16px;
-    filter: brightness(0) invert(1);
+    filter: brightness(0) invert(0);
 }
 
 .confirm-button:disabled .confirm-icon {
