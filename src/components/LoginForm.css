@@ -24,21 +24,20 @@
     margin-bottom: 30px;
 }
 
-/* ИЗМЕНЕНИЯ НАЧИНАЮТСЯ ЗДЕСЬ */
 .login-form-group {
     display: flex;
-    flex-direction: column; /* ← Меняем на вертикальное направление */
-    gap: 8px; /* ← Уменьшаем расстояние между label и input */
-    margin-bottom: 25px; /* ← Увеличиваем отступ между группами */
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 25px;
 }
 
 .login-input-label {
     color: #E3FBA7;
     font-size: 16px;
     font-weight: 500;
-    width: 100%; /* ← Занимает всю ширину */
-    text-align: left; /* ← Текст слева */
-    margin-bottom: 5px; /* ← Отступ снизу */
+    width: 100%;
+    text-align: left;
+    margin-bottom: 5px;
 }
 
 .login-input-field {
@@ -75,7 +74,6 @@
 
 }
 
-/* Остальные стили остаются без изменений */
 .login-password-field::-webkit-credentials-auto-fill-button {
     display: none !important;
     visibility: hidden !important;

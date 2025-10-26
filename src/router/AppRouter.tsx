@@ -2,11 +2,8 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Register from "../components/pages/Register";
 import Login from "../components/pages/Login";
-// import Dashboard from "../pages/Dashboard";
-// import Profile from "../pages/Profile";
-// import Workouts from "../pages/Workouts";
-// import Progress from "../pages/Progress";
-// import NotFound from "../components/pages/NotFound";
+import Main from "../components/pages/Main";
+import Profile from "../components/pages/Profile";
 
 const AppRouter: React.FC = () => {
     return (
@@ -16,13 +13,8 @@ const AppRouter: React.FC = () => {
 
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-
-                {/*<Route path="/dashboard" element={<Dashboard />} />*/}
-                {/*<Route path="/profile" element={<Profile />} />*/}
-                {/*<Route path="/workouts" element={<Workouts />} />*/}
-                {/*<Route path="/progress" element={<Progress />} />*/}
-
-                {/* <Route path="*" element={<NotFound />} /> */}
+                <Route path="/main" element={<Main />} />
+                <Route path="/profile" element={<Profile />} />
             </Routes>
         </BrowserRouter>
     );

@@ -1,0 +1,42 @@
+.reset-button {
+    padding: 25px 80px;
+    background: #DFF5B0;
+    color: #000;
+    border: none;
+    border-radius: 30px;
+    font-size: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 250px;
+    transform: translateX(270px);
+    position: relative;
+    top: -125px;
+}
+
+
+
+.reset-button:disabled {
+    background: #2d2d2d;
+    color: #666;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.reset-button:disabled:hover {
+    background: #2d2d2d;
+}
+
+.reset-icon {
+    width: 30px;
+    height: 30px;
+    filter: brightness(0) invert(0) sepia(1) hue-rotate(120deg) saturate(5);
+}
+
+.reset-button:disabled .reset-icon {
+    filter: brightness(0) invert(0.3);
+}

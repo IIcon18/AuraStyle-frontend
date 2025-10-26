@@ -1,6 +1,6 @@
 import React from "react";
 import "./NewAccountButton.css";
-import NewAccountIcon from "../../../assets/icons/new_acc.svg"; // ← Исправленный путь
+import NewAccountIcon from "../../../assets/icons/new_acc.svg";
 
 interface NewAccountButtonProps {
     onClick?: () => void;

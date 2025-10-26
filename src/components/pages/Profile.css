@@ -1,0 +1,37 @@
+.profile-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #0D131B;
+}
+
+.header-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-icon-profile {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    filter: brightness(0) saturate(100%) invert(84%) sepia(21%) saturate(536%) hue-rotate(34deg) brightness(102%) contrast(97%);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.home-icon-profile:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+.profile-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+}

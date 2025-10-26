@@ -37,7 +37,6 @@ const LoginForm: React.FC = () => {
                 <h2 className="login-form-title">Authorization</h2>
 
                 <div className="login-form">
-                    {/* Email Section */}
                     <div className="login-form-group">
                         <label className="login-input-label">Почта/логин:</label>
                         <input
@@ -49,7 +48,6 @@ const LoginForm: React.FC = () => {
                         />
                     </div>
 
-                    {/* Password Section */}
                     <div className="login-form-group">
                         <label className="login-input-label">Пароль:</label>
                         <div className="login-password-input-container">
@@ -75,7 +73,6 @@ const LoginForm: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Buttons Section */}
                     <div className="login-buttons-container">
                         <div className="login-confirm-wrapper">
                             <ConfirmButton onClick={handleLogin} />

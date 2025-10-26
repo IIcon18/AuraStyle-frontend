@@ -9,8 +9,7 @@ export const RegistrationForm: React.FC = () => {
     const [password, setPassword] = useState("");
     const [formData, setFormData] = useState({
         username: "",
-        email: "", // ← ДОБАВЛЕНО ОТДЕЛЬНОЕ ПОЛЕ ДЛЯ EMAIL
-
+        email: "",
     });
 
     const togglePasswordVisibility = () => {
@@ -33,7 +32,7 @@ export const RegistrationForm: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Ваша логика регистрации
+
         console.log("Registration data:", { ...formData, password });
     };
 
@@ -59,11 +58,11 @@ export const RegistrationForm: React.FC = () => {
                     <div className="form-group">
                         <label className="input-label">Почта:</label>
                         <input
-                            type="email" // ← ИЗМЕНЕНО НА type="email"
+                            type="email"
                             className="input-field"
                             placeholder="Почта"
-                            value={formData.email} // ← ИСПОЛЬЗУЕТ formData.email
-                            onChange={(e) => handleInputChange("email", e.target.value)} // ← СОХРАНЯЕТ В "email"
+                            value={formData.email}
+                            onChange={(e) => handleInputChange("email", e.target.value)}
                         />
                     </div>
 
