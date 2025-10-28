@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Register from "../components/pages/Register";
 import Login from "../components/pages/Login";
-import Main from "../components/pages/Main";
+import Analysis from "../components/pages/Main";
 import Profile from "../components/pages/Profile";
 
 const AppRouter: React.FC = () => {
@@ -13,7 +13,7 @@ const AppRouter: React.FC = () => {
 
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/main" element={<Main />} />
+                <Route path="/analysis" element={<Analysis />} />
                 <Route path="/profile" element={<Profile />} />
             </Routes>
         </BrowserRouter>

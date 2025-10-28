@@ -1,80 +1,130 @@
 .upload-image-box {
     width: 500px;
-    background: #1E313E;
+    background: var(--card-background);
     border-radius: 30px;
     padding: 30px;
     box-shadow: 0 6px 20px rgba(13, 19, 27, 1);
-    height: 600px
+    height: 600px;
+    display: flex;
+    flex-direction: column;
 }
 
-.box-title {
+.box1-title {
     color: #E3FBA7;
     font-size: 20px;
     font-weight: 600;
     text-align: center;
-    margin-bottom: 25px;
-    position: relative;
-    top: 450px;
-    margin-top: 10px;
+    margin-top: auto;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
+    padding-top: 20px;
 }
 
 .pen-icon {
-    width: 24px;
-    height: 24px;
-    filter: brightness(0) saturate(100%) invert(84%) sepia(21%) saturate(536%) hue-rotate(34deg) brightness(102%) contrast(97%);
+    width: 20px;
+    height: 20px;
+    filter: var(--primary-filter);
 }
 
 .upload-area {
-    width: calc(100% + 60px);
-    height: calc(100% + 60px);
-    margin-top: -90px;
-    transform: translateX(-30px);
-    border: transparent;
+    border: 2px dashed transparent;
     border-radius: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
+    flex: 1;
+    margin: -10px;
     position: relative;
+    overflow: hidden;
 }
 
 .upload-area:hover {
-    border-color: #ffffff;
+    border-color: var(--primary-color);
     background: rgba(227, 251, 167, 0.05);
 }
 
+.upload-area.drag-over {
+    border-color: var(--primary-color);
+    background: rgba(227, 251, 167, 0.1);
+    transform: scale(0.98);
+}
+
+.upload-area.has-preview {
+    border: 2px solid var(--primary-color);
+}
+
 .upload-icon {
-    margin-top: -50px;
     width: 200px;
     height: 200px;
-    filter: brightness(0) invert(1) sepia(1) hue-rotate(120deg) saturate(5);
+    filter: brightness(0) saturate(100%) invert(56%) sepia(40%) saturate(531%) hue-rotate(114deg) brightness(91%) contrast(91%);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.upload-area:hover .upload-icon {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.upload-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
 }
 
 .upload-placeholder {
     position: absolute;
-    bottom: 20px;
+    bottom: 40px;
     text-align: center;
-    color: #B9B9B9;
+    color: #E3FBA7;
     font-size: 14px;
     font-weight: 500;
 }
 
 .upload-text {
     font-size: 16px;
-    height: 60px;
-    font-weight: 5000;
+    font-weight: 500;
 }
 
-.divider {
-    height: 1px;
-    background: #0D131B;
-    margin: 5px 0;
-    width: 100%;
-    margin-left: -35px;
-    width: calc(100% + 70px);
+.upload-info {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.change-image-btn {
+    background: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.change-image-btn:hover {
+    background: rgba(227, 251, 167, 0.1);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .upload-image-box {
+        width: 100%;
+        max-width: 500px;
+        height: 500px;
+    }
+
+    .upload-icon {
+        width: 150px;
+        height: 150px;
+    }
+
+    .upload-text {
+        font-size: 14px;
+    }
 }

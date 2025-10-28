@@ -1,40 +1,51 @@
 .reset-button {
-    padding: 25px 80px;
-    background: #DFF5B0;
+    padding: 40px 100px;
+    background: var(--primary-color);
     color: #000;
     border: none;
     border-radius: 30px;
-    font-size: 30px;
+    font-size: 24px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    min-width: 250px;
-    transform: translateX(270px);
+    min-width: 200px;
+    box-shadow: 0 4px 15px rgba(223, 245, 176, 0.3);
+    transition: all 0.3s ease;
     position: relative;
-    top: -125px;
+    top: 0;
 }
 
+.reset-button:not(:disabled):hover {
+    background: #d4f58d;
+    box-shadow: 0 6px 20px rgba(227, 251, 167, 0.5);
+    top: -2px;
+}
 
+.reset-button:not(:disabled):active {
+    top: 0px;
+    box-shadow: 0 2px 10px rgba(227, 251, 167, 0.3);
+    transition: all 0.1s ease;
+}
 
 .reset-button:disabled {
     background: #2d2d2d;
     color: #666;
     cursor: not-allowed;
-    transform: none;
-}
-
-.reset-button:disabled:hover {
-    background: #2d2d2d;
+    box-shadow: none;
 }
 
 .reset-icon {
-    width: 30px;
-    height: 30px;
-    filter: brightness(0) invert(0) sepia(1) hue-rotate(120deg) saturate(5);
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(0);
+    transition: transform 0.3s ease;
+}
+
+.reset-button:not(:disabled):hover .reset-icon {
+    transform: rotate(180deg);
 }
 
 .reset-button:disabled .reset-icon {

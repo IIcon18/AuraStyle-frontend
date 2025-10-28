@@ -1,19 +1,135 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import "./UploadImageBox.css";
 import UploadIcon from "../assets/icons/upload_image.svg";
-import Pen from "../assets/icons/pen.svg";
+import PenIcon from "../assets/icons/pen.svg";
 
-const UploadImageBox: React.FC = () => {
+interface UploadImageBoxProps {
+    onImageUpload?: (file: File) => void;
+}
+
+const UploadImageBox: React.FC<UploadImageBoxProps> = ({ onImageUpload }) => {
+    const [isDragOver, setIsDragOver] = useState(false);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleFileSelect = (file: File) => {
+        // Проверка типа файла
+        if (!file.type.startsWith('image/')) {
+            alert('Пожалуйста, выберите файл изображения');
+            return;
+        }
+
+        // Проверка размера файла (максимум 10MB)
+        if (file.size > 10 * 1024 * 1024) {
+            alert('Размер файла не должен превышать 10MB');
+            return;
+        }
+
+        // Создание preview
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            setPreviewUrl(e.target?.result as string);
+        };
+        reader.readAsDataURL(file);
+
+        // Вызов callback
+        if (onImageUpload) {
+            onImageUpload(file);
+        }
+
+        console.log('Файл загружен:', file.name);
+    };
+
+    const handleClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragOver(true);
+    };
+
+    const handleDragLeave = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragOver(false);
+    };
+
+    const handleDrop = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragOver(false);
+
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            handleFileSelect(files[0]);
+        }
+    };
+
+    const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (files && files.length > 0) {
+            handleFileSelect(files[0]);
+        }
+    };
+
+    const handleKeyPress = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            handleClick();
+        }
+    };
+
     return (
         <div className="upload-image-box">
-            <h3 className="box-title">
-                <img src={Pen} alt="Pen" className="pen-icon" />
-                Загрузите сюда свое изображение
+            <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileInputChange}
+                accept="image/*"
+                style={{ display: 'none' }}
+            />
+
+            <div
+                className={`upload-area ${isDragOver ? 'drag-over' : ''} ${previewUrl ? 'has-preview' : ''}`}
+                onClick={handleClick}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                onKeyPress={handleKeyPress}
+                role="button"
+                tabIndex={0}
+                aria-label="Загрузить изображение для анализа стиля"
+            >
+                {previewUrl ? (
+                    <img
+                        src={previewUrl}
+                        alt="Предпросмотр загруженного изображения"
+                        className="upload-preview"
+                    />
+                ) : (
+                    <img
+                        src={UploadIcon}
+                        alt="Иконка загрузки"
+                        className="upload-icon"
+                    />
+                )}
+
+
+            </div>
+
+            <h3 className="box1-title">
+                <img src={PenIcon} alt="" className="pen-icon" />
+                {previewUrl ? "Изображение загружено" : "Загрузите изображение"}
             </h3>
 
-            <div className="upload-area">
-                <img src={UploadIcon} alt="Загрузить изображение" className="upload-icon" />
-            </div>
+            {previewUrl && (
+                <div className="upload-info">
+                    <button
+                        className="change-image-btn"
+                        onClick={handleClick}
+                    >
+                        Заменить изображение
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

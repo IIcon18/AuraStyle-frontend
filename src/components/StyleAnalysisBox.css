@@ -1,48 +1,47 @@
 .style-analysis-box {
     width: 350px;
-    background: #1E313E;
+    background: var(--card-background);
     border-radius: 30px;
-    padding: 20px;
+    padding: 0;
     box-shadow: 0 6px 20px rgba(13, 19, 27, 0.8);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     position: relative;
-    overflow: hidden;
     height: 480px;
-    top: -60px;
+    margin-top: 0px;
+    display: flex;
+    flex-direction: column;
 }
 
-
 .box-title-wrapper {
-    width: calc(100% + 40px);
-    margin-left: -20px;
-    margin-right: -20px;
-    background: #E3FBA7;
+    background: var(--primary-color);
     border-radius: 30px 30px 0 0;
     padding: 20px 25px;
     text-align: center;
-    margin-bottom: 28px;
-    margin-top: -20px;
-    position: relative;
-    box-sizing: border-box;
+    margin-bottom: 20px;
+    flex-shrink: 0;
 }
 
-.box1-title {
-    color: #000;
+.box-title {
+    color: #000000;
     font-size: 24px;
     font-weight: 700;
     letter-spacing: 0.5px;
     margin: 0;
-    transform: translateY(25%);
 }
 
-.box-content {
-    margin-top: 80px;
+.box2-title {
+    color: #E3FBA7;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin: 0;
 }
 
 .analysis-content {
+    padding: 0 20px 20px 20px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 25px;
+    flex: 1;
 }
 
 .analysis-section {
@@ -59,27 +58,26 @@
 }
 
 .style-tag {
-    background: #E3FBA7;
+    background: var(--primary-color);
     color: #000;
     font-weight: 600;
     font-size: 16px;
     padding: 8px 20px;
     border-radius: 20px;
     text-align: center;
-    max-width: fit-content;
-    align-self: flex-start;
+    width: fit-content;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    transform: translateX(90px);
+    transform: translateX(65%);
 }
 
 .color-palette {
     display: flex;
-    gap: 0px;
+    gap: 12px;
+    justify-content: center;
     margin-top: 5px;
 }
 
 .color-sample {
-    margin-left: 55px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -88,15 +86,13 @@
 }
 
 .style-level-box {
-    margin-left: 30px;
-    background: #E3FBA7;
+    background: var(--primary-color);
     border-radius: 12px;
     padding: 15px 20px;
     display: flex;
     flex-direction: column;
-    gap: 1px;
-    width: 80%;
-    margin-top: 30px;
+    gap: 8px;
+    margin-top: 10px;
 }
 
 .style-level-title {
@@ -113,12 +109,11 @@
 }
 
 .progress-bar {
-    width: 100%;
+    flex: 1;
     height: 10px;
-    background: #1E313E;
+    background: var(--card-background);
     border-radius: 5px;
     overflow: hidden;
-    position: relative;
 }
 
 .progress-fill {
@@ -133,17 +128,19 @@
     font-size: 14px;
     font-weight: 600;
     white-space: nowrap;
+    min-width: 70px;
 }
+
+/* УДАЛЯЕМ стили для внутренней кнопки сброса */
+/* .reset-button-internal и .reset-icon-internal */
 
 @media (max-width: 768px) {
     .style-analysis-box {
         width: 100%;
         max-width: 500px;
-        padding: 15px;
-    }
-
-    .box-title-wrapper {
-        padding: 12px 15px;
+        margin-top: 0;
+        height: auto;
+        min-height: 450px;
     }
 
     .box-title {
@@ -153,19 +150,10 @@
     .style-tag {
         font-size: 14px;
         padding: 6px 16px;
-        transform: translateX(-30px);
     }
 
     .color-sample {
         width: 25px;
         height: 25px;
-    }
-
-    .style-level-title {
-        font-size: 14px;
-    }
-
-    .progress-value {
-        font-size: 12px;
     }
 }

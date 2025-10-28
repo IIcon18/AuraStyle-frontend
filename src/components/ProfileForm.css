@@ -23,60 +23,77 @@
     position: relative;
 }
 
+/* Базовые стили для профильных блоков */
 .profile-box {
     background: #1E313E;
     border-radius: 30px;
-    padding: 30px;
+    padding: 0; /* Убираем padding, так как заголовок теперь часть структуры */
     box-shadow: 0 6px 20px rgba(13, 19, 27, 1);
     display: flex;
     flex-direction: column;
+    position: relative;
+    overflow: hidden; /* Чтобы заголовок не выходил за границы */
 }
 
-.history-box {
+/* Специфичные размеры блоков */
+.profile-box.history-box {
     width: 450px;
-    margin-top: 60px;
     height: 450px;
-    border: 30px ;
 }
 
-.profile-info-box {
+
+
+/* Универсальный стиль для заголовков */
+.profile-box-header {
+    color: #0D131B;
+    background: #E3FBA7;
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    padding: 15px 20px;
+    width: 100%;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+/* Добавьте в ProfileForm.css */
+.profile-box.profile-info-box {
     width: 300px;
+    height: 350px;
+    align-items: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-top: 60px;
-    height: 350px;
     position: relative;
 }
 
-.box1-title {
-    color: #0D131B;
-    background: #E3FBA7;
-    font-size: 28px;
-    font-weight: 600;
-    text-align: center;
-    padding: 12px 20px;
-    border-radius: 30px 30px 0 0;
-    margin: -45px -30px 35px -30px;
-    width: calc(100% + 60px);
+.profile-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0; /* Убираем gap между контейнером и кнопкой */
 }
 
-.box2-title {
-    color: #0D131B;
-    background: #E3FBA7;
-    font-size: 28px;
-    font-weight: 600;
-    text-align: center;
-    padding: 12px 20px;
-    border-radius: 30px 30px 0 0;
-    margin: -30px -30px 20px -30px;
-    width: calc(100% + 60px);
+/* Контейнер для кнопки выхода */
+.logout-button-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Отступ между контейнером профиля и кнопкой */
 }
 
+.profile-box-content {
+    padding: 25px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* Стили для истории анализов */
 .analysis-list {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
 }
 
 .analysis-item {
@@ -87,12 +104,24 @@
     background: rgba(30, 49, 62, 0.6);
     border-radius: 8px;
     border: 1px solid rgba(227, 251, 167, 0.1);
+    transition: all 0.2s ease;
+    gap: 10px;
+}
+
+.analysis-item:hover {
+    background: rgba(30, 49, 62, 0.8);
+    border-color: rgba(227, 251, 167, 0.2);
 }
 
 .analysis-date,
 .analysis-style {
     color: #FFFFFF;
-    font-size: 14px;
+    font-size: 12px;
+}
+
+.analysis-style {
+    font-weight: 500;
+    color: #E3FBA7;
 }
 
 .view-button {
@@ -105,17 +134,21 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
+    min-width: 100px;
 }
 
 .view-button:hover {
     background: #D0E890;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(227, 251, 167, 0.3);
 }
 
+/* Стили для секции аватарки */
 .avatar-section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
 .avatar-icon {
@@ -123,39 +156,79 @@
     height: 80px;
     filter: brightness(0) saturate(100%) invert(84%) sepia(21%) saturate(536%) hue-rotate(34deg) brightness(102%) contrast(97%);
     margin-bottom: 10px;
+    transition: transform 0.3s ease;
 }
 
 .change-avatar {
-    color: #AAAAAA;
+    color: #E3FBA7;
     font-size: 12px;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 5px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-.pen-icon {
-    width: 12px;
-    height: 12px;
-    filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(90%) contrast(90%);
+.change-avatar:hover {
+    background: rgba(227, 251, 167, 0.1);
+    transform: translateY(-2px);
+    gap: 8px;
 }
 
+.change-avatar:hover .pen1-icon {
+    transform: rotate(15deg) scale(1.2);
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+}
+
+.pen1-icon {
+    margin-top: 2px;
+    width: 10px;
+    height: 10px;
+    filter: brightness(0) saturate(100%) invert(84%) sepia(21%) saturate(536%) hue-rotate(34deg) brightness(102%) contrast(97%);
+    transition: all 0.3s ease;
+}
+
+/* Стили для приветственной секции */
 .welcome-section {
     text-align: center;
-    margin-bottom: 30px;
-    margin-top: 5px;
+    margin-bottom: 25px;
 }
 
 .welcome-text {
     color: #FFFFFF;
-    font-size: 22px;
+    font-size: 18px;
     margin-bottom: 5px;
+    opacity: 0.8;
 }
 
 .username {
-    color: #FFFFFF;
-    font-size: 25px;
+    color: #E3FBA7;
+    font-size: 22px;
     font-weight: 600;
 }
 
+/* Анимация при наведении на всю секцию аватарки */
+.avatar-section:hover .avatar-icon {
+    transform: scale(1.05);
+}
 
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .profile-content {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .profile-box.history-box,
+    .profile-box.profile-info-box {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        min-height: 300px;
+    }
+}
