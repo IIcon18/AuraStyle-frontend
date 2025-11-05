@@ -5,7 +5,7 @@
     padding: 0;
     box-shadow: 0 6px 20px rgba(13, 19, 27, 0.8);
     position: relative;
-    height: 480px;
+    height: 440px;
     margin-top: 0px;
     display: flex;
     flex-direction: column;
@@ -156,4 +156,13 @@
         width: 25px;
         height: 25px;
     }
+}
+
+.divider {
+    height: 1px;
+    background: #0D131B;
+    margin: 5px 0;
+    width: 100%;
+    margin-left: -35px;
+    width: calc(100% + 70px);
 }

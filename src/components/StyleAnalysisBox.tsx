@@ -23,6 +23,7 @@ const StyleAnalysisBox: React.FC<StyleAnalysisProps> = ({
                 <div className="analysis-section">
                     <h4 className="section-title">Стиль одежды:</h4>
                     <div className="style-tag">{clothingStyle}</div>
+                    <div className="divider"></div>
                 </div>
 
                 {/* Секция цветовой палитры */}
@@ -38,6 +39,7 @@ const StyleAnalysisBox: React.FC<StyleAnalysisProps> = ({
                             />
                         ))}
                     </div>
+                    <div className="divider"></div>
                 </div>
 
                 {/* Секция уровня стиля */}

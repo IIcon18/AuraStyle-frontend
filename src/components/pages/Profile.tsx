@@ -7,7 +7,7 @@ import ProfileForm from "../ProfileForm";
 
 const Profile: React.FC = () => {
     const handleHomeClick = () => {
-        window.location.href = "/main";
+        window.location.href = "/analysis";
     };
 
     return (
