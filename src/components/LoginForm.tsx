@@ -7,10 +7,12 @@ import ConfirmButton from "./shared/Buttons/ConfirmButton";
 
 const LoginForm: React.FC = () => {
     const [formData, setFormData] = useState({
-        username: "",
+        email: "",
         password: ""
     });
     const [showPassword, setShowPassword] = useState(false);
+    const [message, setMessage] = useState<{text: string, type: 'success' | 'error'} | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -21,12 +23,17 @@ const LoginForm: React.FC = () => {
             ...prev,
             [field]: value
         }));
+        // Сбрасываем сообщение при изменении поля
+        if (message) setMessage(null);
     };
 
     const handleLogin = async () => {
-        // Проверяем что все поля заполнены
-        if (!formData.username || !formData.password) {
-            alert("Заполните все поля");
+        setIsLoading(true);
+        setMessage(null);
+
+        if (!formData.email || !formData.password) {
+            setMessage({text: "Заполните все поля", type: 'error'});
+            setIsLoading(false);
             return;
         }
 
@@ -39,7 +46,7 @@ const LoginForm: React.FC = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    email: formData.username, // твой бэкенд ожидает email для логина
+                    email: formData.email,
                     password: formData.password
                 })
             });
@@ -48,19 +55,22 @@ const LoginForm: React.FC = () => {
 
             if (response.ok) {
                 console.log("✅ Успешный вход!", data);
-                // Сохраняем токен в localStorage
                 localStorage.setItem('authToken', data.access_token);
-                alert("Вход успешен!");
+                setMessage({text: "Вход успешен! Перенаправляем...", type: 'success'});
 
-                // Перенаправляем на главную страницу
-                window.location.href = '/analysis';
+                // Автоматический редирект через 1.5 секунды
+                setTimeout(() => {
+                    window.location.href = '/analysis';
+                }, 1500);
             } else {
                 console.error("❌ Ошибка входа:", data);
-                alert(`Ошибка: ${data.detail || "Неверный логин или пароль"}`);
+                setMessage({text: `Ошибка: ${data.detail || "Неверный email или пароль"}`, type: 'error'});
             }
         } catch (error) {
             console.error("❌ Ошибка сети:", error);
-            alert("Ошибка сети. Проверьте подключение.");
+            setMessage({text: "Ошибка сети. Проверьте подключение.", type: 'error'});
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -73,15 +83,29 @@ const LoginForm: React.FC = () => {
             <div className="login-form-box">
                 <h2 className="login-form-title">Authorization</h2>
 
+                {/* Сообщение */}
+                {message && (
+                    <div className={`message ${message.type}`}>
+                        <span>{message.text}</span>
+                        <button
+                            className="message-close"
+                            onClick={() => setMessage(null)}
+                        >
+                            ×
+                        </button>
+                    </div>
+                )}
+
                 <div className="login-form">
                     <div className="login-form-group">
-                        <label className="login-input-label">Почта/логин:</label>
+                        <label className="login-input-label">Почта:</label>
                         <input
-                            type="text"
+                            type="email"
                             className="login-input-field"
                             placeholder="Почта"
-                            value={formData.username}
-                            onChange={(e) => handleInputChange("username", e.target.value)}
+                            value={formData.email}
+                            onChange={(e) => handleInputChange("email", e.target.value)}
+                            disabled={isLoading}
                         />
                     </div>
 
@@ -94,11 +118,13 @@ const LoginForm: React.FC = () => {
                                 placeholder="Пароль"
                                 value={formData.password}
                                 onChange={(e) => handleInputChange("password", e.target.value)}
+                                disabled={isLoading}
                             />
                             <button
                                 type="button"
                                 className="login-password-toggle"
                                 onClick={togglePasswordVisibility}
+                                disabled={isLoading}
                             >
                                 <img
                                     src={showPassword ? EyeClosed : EyeOpen}
@@ -112,12 +138,20 @@ const LoginForm: React.FC = () => {
 
                     <div className="login-buttons-container">
                         <div className="login-confirm-wrapper">
-                            <ConfirmButton onClick={handleLogin} />
+                            <ConfirmButton
+                                onClick={handleLogin}
+                                disabled={isLoading}
+                            >
+                                {isLoading ? "Вход..." : "Войти"}
+                            </ConfirmButton>
                         </div>
 
                         <div className="login-divider"></div>
 
-                        <NewAccountButton onClick={handleCreateAccount} />
+                        <NewAccountButton
+                            onClick={handleCreateAccount}
+                            disabled={isLoading}
+                        />
                     </div>
                 </div>
             </div>
