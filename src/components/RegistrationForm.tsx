@@ -30,10 +30,46 @@ export const RegistrationForm: React.FC = () => {
         return "strong";
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        console.log("Registration data:", { ...formData, password });
+        // Проверяем что все поля заполнены
+        if (!formData.username || !formData.email || !password) {
+            alert("Заполните все поля");
+            return;
+        }
+
+        try {
+            console.log("Отправка данных на регистрацию...");
+
+            const response = await fetch('http://localhost:8000/api/v1/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: formData.username,
+                    email: formData.email,
+                    password: password
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                console.log("✅ Успешная регистрация!", data);
+                alert("Регистрация успешна! Теперь можете войти.");
+
+                // Перенаправляем на страницу логина
+                window.location.href = '/login';
+            } else {
+                console.error("❌ Ошибка регистрации:", data);
+                alert(`Ошибка: ${data.detail || "Неизвестная ошибка"}`);
+            }
+        } catch (error) {
+            console.error("❌ Ошибка сети:", error);
+            alert("Ошибка сети. Проверьте подключение.");
+        }
     };
 
     const passwordStrength = getPasswordStrength(password);

@@ -23,8 +23,45 @@ const LoginForm: React.FC = () => {
         }));
     };
 
-    const handleLogin = () => {
-        console.log("Login data:", formData);
+    const handleLogin = async () => {
+        // Проверяем что все поля заполнены
+        if (!formData.username || !formData.password) {
+            alert("Заполните все поля");
+            return;
+        }
+
+        try {
+            console.log("Отправка данных на вход...");
+
+            const response = await fetch('http://localhost:8000/api/v1/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: formData.username, // твой бэкенд ожидает email для логина
+                    password: formData.password
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                console.log("✅ Успешный вход!", data);
+                // Сохраняем токен в localStorage
+                localStorage.setItem('authToken', data.access_token);
+                alert("Вход успешен!");
+
+                // Перенаправляем на главную страницу
+                window.location.href = '/analysis';
+            } else {
+                console.error("❌ Ошибка входа:", data);
+                alert(`Ошибка: ${data.detail || "Неверный логин или пароль"}`);
+            }
+        } catch (error) {
+            console.error("❌ Ошибка сети:", error);
+            alert("Ошибка сети. Проверьте подключение.");
+        }
     };
 
     const handleCreateAccount = () => {

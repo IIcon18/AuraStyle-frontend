@@ -41,7 +41,6 @@ input[type="number"] {
     margin-bottom: 28px;
 }
 
-
 .form-group {
     display: flex;
     flex-direction: column;
@@ -68,7 +67,6 @@ input[type="number"] {
     font-size: 14px;
     box-sizing: border-box;
     text-align: left;
-
 }
 
 .input-field::placeholder {
@@ -96,23 +94,6 @@ input[type="number"] {
     position: relative;
     z-index: 1;
     text-align: left;
-}
-
-
-.password-field {
-    &::-webkit-credentials-auto-fill-button {
-        display: none !important;
-        visibility: hidden !important;
-        pointer-events: none !important;
-        position: absolute;
-        right: -1000px;
-    }
-
-
-    &::-ms-reveal,
-    &::-ms-clear {
-        display: none !important;
-    }
 }
 
 .password-field::placeholder {
