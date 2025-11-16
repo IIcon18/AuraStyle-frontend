@@ -232,3 +232,16 @@
         min-height: 300px;
     }
 }
+
+.loading, .error-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    color: #E3FBA7;
+    font-size: 18px;
+}
+
+.error-message {
+    color: #ff6b6b;
+}
