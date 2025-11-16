@@ -117,21 +117,17 @@ input[type="number"] {
     width: 24px;
     height: 24px;
     border-radius: 3px;
+    color: white;
+    font-size: 16px;
 }
 
 .password-toggle:hover {
-    background-color: transparent;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
-.password-toggle img {
-    filter: brightness(0) invert(0.5);
-    width: 16px;
-    height: 16px;
-    transition: filter 0.2s;
-}
-
-.password-toggle:hover img {
-    filter: brightness(0) invert(0.5);
+.password-toggle:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .password-strength-bar {
@@ -213,7 +209,6 @@ input[type="number"] {
     font-size: 14px;
 }
 
-/* Стили для сообщений */
 .message {
     padding: 12px 16px;
     border-radius: 8px;
@@ -266,15 +261,30 @@ input[type="number"] {
     }
 }
 
-/* Стили для disabled состояний */
-.input-field:disabled,
-.login-input-field:disabled {
+.input-field:disabled {
     opacity: 0.6;
     cursor: not-allowed;
 }
 
-.password-toggle:disabled,
-.login-password-toggle:disabled {
-    opacity: 0.6;
+.confirm-button {
+    width: 100%;
+    padding: 12px 24px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 10px;
+}
+
+.confirm-button:hover:not(:disabled) {
+    background: #0056b3;
+}
+
+.confirm-button:disabled {
+    background: #6c757d;
     cursor: not-allowed;
+    opacity: 0.6;
 }

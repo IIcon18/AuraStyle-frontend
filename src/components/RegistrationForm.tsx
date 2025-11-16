@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import "./RegistrationForm.css";
-import EyeOpen from "../assets/icons/eye.svg";
-import EyeClosed from "../assets/icons/hide_eye.svg";
-import ConfirmButton from "./shared/Buttons/ConfirmButton";
 
 export const RegistrationForm: React.FC = () => {
+    console.log("🟢 RegistrationForm загружен"); // ← ДОБАВЬ ЭТУ СТРОЧКУ
+
     const [showPassword, setShowPassword] = useState(false);
     const [password, setPassword] = useState("");
     const [formData, setFormData] = useState({
         username: "",
         email: "",
     });
+    const [message, setMessage] = useState<{text: string, type: 'success' | 'error'} | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -21,6 +22,7 @@ export const RegistrationForm: React.FC = () => {
             ...prev,
             [field]: value
         }));
+        if (message) setMessage(null);
     };
 
     const getPasswordStrength = (pass: string) => {
@@ -32,10 +34,12 @@ export const RegistrationForm: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsLoading(true);
+        setMessage(null);
 
-        // Проверяем что все поля заполнены
         if (!formData.username || !formData.email || !password) {
-            alert("Заполните все поля");
+            setMessage({text: "Заполните все поля", type: 'error'});
+            setIsLoading(false);
             return;
         }
 
@@ -58,17 +62,20 @@ export const RegistrationForm: React.FC = () => {
 
             if (response.ok) {
                 console.log("✅ Успешная регистрация!", data);
-                alert("Регистрация успешна! Теперь можете войти.");
+                setMessage({text: "Регистрация успешна! Перенаправляем...", type: 'success'});
 
-                // Перенаправляем на страницу логина
-                window.location.href = '/login';
+                setTimeout(() => {
+                    window.location.href = '/login';
+                }, 1500);
             } else {
                 console.error("❌ Ошибка регистрации:", data);
-                alert(`Ошибка: ${data.detail || "Неизвестная ошибка"}`);
+                setMessage({text: `Ошибка: ${data.detail || "Неизвестная ошибка"}`, type: 'error'});
             }
         } catch (error) {
             console.error("❌ Ошибка сети:", error);
-            alert("Ошибка сети. Проверьте подключение.");
+            setMessage({text: "Ошибка сети. Проверьте подключение.", type: 'error'});
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -79,6 +86,18 @@ export const RegistrationForm: React.FC = () => {
             <div className="registration-box">
                 <h2 className="registration-title">Регистрация</h2>
 
+                {message && (
+                    <div className={`message ${message.type}`}>
+                        <span>{message.text}</span>
+                        <button
+                            className="message-close"
+                            onClick={() => setMessage(null)}
+                        >
+                            ×
+                        </button>
+                    </div>
+                )}
+
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label className="input-label">Логин:</label>
@@ -88,6 +107,7 @@ export const RegistrationForm: React.FC = () => {
                             placeholder="Логин"
                             value={formData.username}
                             onChange={(e) => handleInputChange("username", e.target.value)}
+                            disabled={isLoading}
                         />
                     </div>
 
@@ -99,6 +119,7 @@ export const RegistrationForm: React.FC = () => {
                             placeholder="Почта"
                             value={formData.email}
                             onChange={(e) => handleInputChange("email", e.target.value)}
+                            disabled={isLoading}
                         />
                     </div>
 
@@ -111,18 +132,15 @@ export const RegistrationForm: React.FC = () => {
                                 placeholder="Пароль"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
+                                disabled={isLoading}
                             />
                             <button
                                 type="button"
                                 className="password-toggle"
                                 onClick={togglePasswordVisibility}
+                                disabled={isLoading}
                             >
-                                <img
-                                    src={showPassword ? EyeClosed : EyeOpen}
-                                    alt={showPassword ? "Hide password" : "Show password"}
-                                    width="20"
-                                    height="20"
-                                />
+                                {showPassword ? "🙈" : "👁️"}
                             </button>
                             {password && (
                                 <div className="password-strength-bar">
@@ -136,7 +154,13 @@ export const RegistrationForm: React.FC = () => {
 
                     <div className="divider"></div>
 
-                    <ConfirmButton />
+                    <button
+                        type="submit"
+                        className="confirm-button"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? "Регистрация..." : "Зарегистрироваться"}
+                    </button>
                 </form>
             </div>
         </div>

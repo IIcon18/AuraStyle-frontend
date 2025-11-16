@@ -5,6 +5,8 @@ import Footer from "../shared/Footer/Footer";
 import RegistrationForm from "../RegistrationForm";
 
 const Register: React.FC = () => {
+    console.log("🔵 Register страница загружена");
+
     return (
         <div  className="register-page">
             <Header />
