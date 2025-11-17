@@ -5,9 +5,10 @@ import PenIcon from "../assets/icons/pen.svg";
 import LogoutButton from "./shared/Buttons/LogoutButton";
 
 interface AnalysisHistoryItem {
+    id: string;
     date: string;
     style: string;
-    id: string;
+    // Добавь другие поля которые возвращает бэкенд
 }
 
 interface UserData {
@@ -19,21 +20,13 @@ interface UserData {
 
 const ProfileForm: React.FC = () => {
     const [userData, setUserData] = useState<UserData | null>(null);
+    const [analysisHistory, setAnalysisHistory] = useState<AnalysisHistoryItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Демо-данные истории анализов (пока что, потом заменим на реальные)
-    const analysisHistory: AnalysisHistoryItem[] = [
-        { date: "15 мая 2025", style: "Классический Стиль", id: "1" },
-        { date: "10 мая 2025", style: "Винтажный Стиль", id: "2" },
-        { date: "5 мая 2025", style: "Спортивный", id: "3" },
-        { date: "1 мая 2025", style: "Минимализм", id: "4" },
-        { date: "28 апреля 2025", style: "Бохо", id: "5" }
-    ];
-
-    // Загрузка данных пользователя
+    // Загрузка данных пользователя и истории
     useEffect(() => {
-        const fetchUserData = async () => {
+        const fetchProfileData = async () => {
             try {
                 setLoading(true);
                 const token = localStorage.getItem('authToken');
@@ -43,7 +36,8 @@ const ProfileForm: React.FC = () => {
                     return;
                 }
 
-                const response = await fetch('http://localhost:8000/api/v1/users/me', {
+                // Загружаем данные пользователя
+                const userResponse = await fetch('http://localhost:8000/api/v1/users/me', {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -51,16 +45,32 @@ const ProfileForm: React.FC = () => {
                     },
                 });
 
-                if (response.ok) {
-                    const userData = await response.json();
+                if (userResponse.ok) {
+                    const userData = await userResponse.json();
                     setUserData(userData);
-                } else if (response.status === 401) {
-                    // Неавторизован - редирект на логин
+                } else if (userResponse.status === 401) {
                     localStorage.removeItem('authToken');
                     window.location.href = '/login';
-                } else {
-                    throw new Error('Ошибка загрузки данных');
+                    return;
                 }
+
+                // 🔥 ЗАГРУЗКА РЕАЛЬНОЙ ИСТОРИИ АНАЛИЗОВ
+                // TODO: Добавь эндпоинт для истории анализов
+                // const analysisResponse = await fetch('http://localhost:8000/api/v1/analysis/history', {
+                //     method: 'GET',
+                //     headers: {
+                //         'Authorization': `Bearer ${token}`,
+                //     },
+                // });
+
+                // if (analysisResponse.ok) {
+                //     const realHistory = await analysisResponse.json();
+                //     setAnalysisHistory(realHistory);
+                // } else {
+                //     // Если эндпоинта нет - оставляем пустой массив
+                //     setAnalysisHistory([]);
+                // }
+
             } catch (error) {
                 console.error('Ошибка загрузки профиля:', error);
                 setError('Не удалось загрузить данные профиля');
@@ -69,11 +79,20 @@ const ProfileForm: React.FC = () => {
             }
         };
 
-        fetchUserData();
-    }, []);
+        fetchProfileData();
+    }, []); // 🔥 Пустой массив зависимостей - загружается только при монтировании
+
+    // Временные демо-данные (удали когда будет реальный эндпоинт)
+    useEffect(() => {
+        if (!loading && analysisHistory.length === 0) {
+            // 🔥 УБЕРИ ЭТИ ДЕМО-ДАННЫЕ КОГДА БУДЕТ РЕАЛЬНЫЙ ЭНДПОИНТ
+            setAnalysisHistory([]); // ← СДЕЛАЙ ПУСТЫМ МАССИВОМ ЧТОБЫ УБРАТЬ ДЕМО-ДАННЫЕ
+        }
+    }, [loading, analysisHistory.length]);
 
     const handleViewAnalysis = (id: string) => {
         console.log("Просмотр анализа:", id);
+        // TODO: Переход на страницу деталей анализа
     };
 
     const handleLogout = () => {
@@ -111,18 +130,24 @@ const ProfileForm: React.FC = () => {
                     <div className="profile-box-header">История анализа</div>
                     <div className="profile-box-content">
                         <div className="analysis-list">
-                            {analysisHistory.map((item) => (
-                                <div key={item.id} className="analysis-item">
-                                    <span className="analysis-date">{item.date}</span>
-                                    <span className="analysis-style">{item.style}</span>
-                                    <button
-                                        className="view-button"
-                                        onClick={() => handleViewAnalysis(item.id)}
-                                    >
-                                        Просмотр
-                                    </button>
+                            {analysisHistory.length > 0 ? (
+                                analysisHistory.map((item) => (
+                                    <div key={item.id} className="analysis-item">
+                                        <span className="analysis-date">{item.date}</span>
+                                        <span className="analysis-style">{item.style}</span>
+                                        <button
+                                            className="view-button"
+                                            onClick={() => handleViewAnalysis(item.id)}
+                                        >
+                                            Просмотр
+                                        </button>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="no-history">
+                                    История анализов пуста
                                 </div>
-                            ))}
+                            )}
                         </div>
                     </div>
                 </div>

@@ -245,3 +245,10 @@
 .error-message {
     color: #ff6b6b;
 }
+
+.no-history {
+    text-align: center;
+    color: #888;
+    padding: 20px;
+    font-style: italic;
+}
