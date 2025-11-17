@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./RegistrationForm.css";
+import EyeClosed from "../assets/icons/hide_eye.svg";
+import EyeOpen from "../assets/icons/eye.svg";
 
 export const RegistrationForm: React.FC = () => {
     console.log("🟢 RegistrationForm загружен"); // ← ДОБАВЬ ЭТУ СТРОЧКУ
@@ -136,12 +138,18 @@ export const RegistrationForm: React.FC = () => {
                             />
                             <button
                                 type="button"
-                                className="password-toggle"
+                                className="login-password-toggle"
                                 onClick={togglePasswordVisibility}
                                 disabled={isLoading}
                             >
-                                {showPassword ? "🙈" : "👁️"}
+                                <img
+                                    src={showPassword ? EyeClosed : EyeOpen}
+                                    alt={showPassword ? "Hide password" : "Show password"}
+                                    width="20"
+                                    height="20"
+                                />
                             </button>
+
                             {password && (
                                 <div className="password-strength-bar">
                                     <div
