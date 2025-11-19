@@ -5,35 +5,30 @@ import PenIcon from "../assets/icons/pen.svg";
 import LogoutButton from "./shared/Buttons/LogoutButton";
 
 interface AnalysisHistoryItem {
+    id: string;
     date: string;
     style: string;
-    id: string;
 }
 
 interface UserData {
     id: number;
     username: string;
     email: string;
+    avatar_url: string | null;
     created_at: string;
 }
 
 const ProfileForm: React.FC = () => {
     const [userData, setUserData] = useState<UserData | null>(null);
+    const [analysisHistory, setAnalysisHistory] = useState<AnalysisHistoryItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [message, setMessage] = useState<{text: string, type: 'success' | 'error'} | null>(null);
+    const [avatarLoading, setAvatarLoading] = useState(false);
 
-    // Демо-данные истории анализов (пока что, потом заменим на реальные)
-    const analysisHistory: AnalysisHistoryItem[] = [
-        { date: "15 мая 2025", style: "Классический Стиль", id: "1" },
-        { date: "10 мая 2025", style: "Винтажный Стиль", id: "2" },
-        { date: "5 мая 2025", style: "Спортивный", id: "3" },
-        { date: "1 мая 2025", style: "Минимализм", id: "4" },
-        { date: "28 апреля 2025", style: "Бохо", id: "5" }
-    ];
-
-    // Загрузка данных пользователя
+    // Загрузка данных пользователя и истории
     useEffect(() => {
-        const fetchUserData = async () => {
+        const fetchProfileData = async () => {
             try {
                 setLoading(true);
                 const token = localStorage.getItem('authToken');
@@ -43,7 +38,8 @@ const ProfileForm: React.FC = () => {
                     return;
                 }
 
-                const response = await fetch('http://localhost:8000/api/v1/users/me', {
+                // Загружаем данные пользователя
+                const userResponse = await fetch('http://localhost:8000/api/v1/users/me', {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -51,16 +47,33 @@ const ProfileForm: React.FC = () => {
                     },
                 });
 
-                if (response.ok) {
-                    const userData = await response.json();
+                if (userResponse.ok) {
+                    const userData = await userResponse.json();
                     setUserData(userData);
-                } else if (response.status === 401) {
-                    // Неавторизован - редирект на логин
+                } else if (userResponse.status === 401) {
                     localStorage.removeItem('authToken');
                     window.location.href = '/login';
+                    return;
                 } else {
-                    throw new Error('Ошибка загрузки данных');
+                    throw new Error('Ошибка загрузки данных пользователя');
                 }
+
+                // Загружаем историю анализов
+                const analysisResponse = await fetch('http://localhost:8000/api/v1/analysis/history', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+
+                if (analysisResponse.ok) {
+                    const realHistory = await analysisResponse.json();
+                    setAnalysisHistory(realHistory);
+                } else {
+                    // Если эндпоинта нет - оставляем пустой массив
+                    setAnalysisHistory([]);
+                }
+
             } catch (error) {
                 console.error('Ошибка загрузки профиля:', error);
                 setError('Не удалось загрузить данные профиля');
@@ -69,11 +82,12 @@ const ProfileForm: React.FC = () => {
             }
         };
 
-        fetchUserData();
+        fetchProfileData();
     }, []);
 
     const handleViewAnalysis = (id: string) => {
         console.log("Просмотр анализа:", id);
+        // TODO: Переход на страницу деталей анализа
     };
 
     const handleLogout = () => {
@@ -82,9 +96,59 @@ const ProfileForm: React.FC = () => {
         window.location.href = "/login";
     };
 
-    const handleChangeAvatar = () => {
-        console.log("Изменение аватарки");
-        // TODO: Реализовать загрузку аватара
+    const handleChangeAvatar = async () => {
+        // Создаем input элемент для выбора файла
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+
+        input.onchange = async (e) => {
+            const file = (e.target as HTMLInputElement).files?.[0];
+            if (!file) return;
+
+            try {
+                setAvatarLoading(true);
+                setMessage(null);
+
+                const token = localStorage.getItem('authToken');
+                if (!token) {
+                    setMessage({text: 'Необходимо авторизоваться', type: 'error'});
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('file', file);
+
+                const response = await fetch('http://localhost:8000/api/v1/users/me/avatar', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    const updatedUser = await response.json();
+                    setUserData(updatedUser);
+                    setMessage({text: 'Аватар успешно обновлен!', type: 'success'});
+
+                    // Автоматически скрываем сообщение через 3 секунды
+                    setTimeout(() => {
+                        setMessage(null);
+                    }, 3000);
+                } else {
+                    const errorData = await response.json();
+                    setMessage({text: `Ошибка: ${errorData.detail || 'Не удалось загрузить аватар'}`, type: 'error'});
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки аватара:', error);
+                setMessage({text: 'Ошибка загрузки аватара', type: 'error'});
+            } finally {
+                setAvatarLoading(false);
+            }
+        };
+
+        input.click();
     };
 
     if (loading) {
@@ -111,44 +175,69 @@ const ProfileForm: React.FC = () => {
                     <div className="profile-box-header">История анализа</div>
                     <div className="profile-box-content">
                         <div className="analysis-list">
-                            {analysisHistory.map((item) => (
-                                <div key={item.id} className="analysis-item">
-                                    <span className="analysis-date">{item.date}</span>
-                                    <span className="analysis-style">{item.style}</span>
-                                    <button
-                                        className="view-button"
-                                        onClick={() => handleViewAnalysis(item.id)}
-                                    >
-                                        Просмотр
-                                    </button>
+                            {analysisHistory.length > 0 ? (
+                                analysisHistory.map((item) => (
+                                    <div key={item.id} className="analysis-item">
+                                        <span className="analysis-date">{item.date}</span>
+                                        <span className="analysis-style">{item.style}</span>
+                                        <button
+                                            className="view-button"
+                                            onClick={() => handleViewAnalysis(item.id)}
+                                        >
+                                            Просмотр
+                                        </button>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="no-history">
+                                    История анализов пуста
                                 </div>
-                            ))}
+                            )}
                         </div>
                     </div>
                 </div>
 
                 {/* Обертка для профиля и кнопки выхода */}
                 <div className="profile-info-wrapper">
+                    {/* Сообщения */}
+                    {message && (
+                        <div className={`message ${message.type}`}>
+                            <span>{message.text}</span>
+                            <button
+                                className="message-close"
+                                onClick={() => setMessage(null)}
+                            >
+                                ×
+                            </button>
+                        </div>
+                    )}
+
                     {/* Блок информации профиля */}
                     <div className="profile-box profile-info-box">
                         <div className="profile-box-header">Профиль</div>
                         <div className="profile-box-content">
                             <div className="avatar-section">
-                                <img
-                                    src={UserIcon}
-                                    alt="Аватар"
-                                    className="avatar-icon"
-                                />
-                                <span
+                                {userData?.avatar_url ? (
+                                    <img
+                                        src={`http://localhost:8000${userData.avatar_url}`}
+                                        alt="Аватар"
+                                        className="avatar-image"
+                                    />
+                                ) : (
+                                    <img
+                                        src={UserIcon}
+                                        alt="Аватар"
+                                        className="avatar-icon"
+                                    />
+                                )}
+                                <button
                                     className="change-avatar"
                                     onClick={handleChangeAvatar}
-                                    role="button"
-                                    tabIndex={0}
-                                    onKeyPress={(e) => e.key === 'Enter' && handleChangeAvatar()}
+                                    disabled={avatarLoading}
                                 >
                                     <img src={PenIcon} alt="Изменить" className="pen1-icon" />
-                                    Изменить аватарку
-                                </span>
+                                    {avatarLoading ? "Загрузка..." : "Изменить аватарку"}
+                                </button>
                             </div>
 
                             <div className="welcome-section">
