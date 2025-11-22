@@ -9,10 +9,10 @@ interface ResetButtonProps {
 }
 
 const ResetButton: React.FC<ResetButtonProps> = ({
-                                                     onClick,
-                                                     disabled = false,
-                                                     children = "Сбросить"
-                                                 }) => {
+    onClick,
+    disabled = false,
+    children = "Сбросить"
+}) => {
     const handleClick = () => {
         if (!disabled && onClick) {
             onClick();

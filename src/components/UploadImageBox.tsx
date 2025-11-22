@@ -5,34 +5,24 @@ import PenIcon from "../assets/icons/pen.svg";
 
 interface UploadImageBoxProps {
     onImageUpload?: (file: File) => void;
+    previewUrl?: string | null;
 }
 
-const UploadImageBox: React.FC<UploadImageBoxProps> = ({ onImageUpload }) => {
+const UploadImageBox: React.FC<UploadImageBoxProps> = ({ onImageUpload, previewUrl }) => {
     const [isDragOver, setIsDragOver] = useState(false);
-    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleFileSelect = (file: File) => {
-        // Проверка типа файла
         if (!file.type.startsWith('image/')) {
             alert('Пожалуйста, выберите файл изображения');
             return;
         }
 
-        // Проверка размера файла (максимум 10MB)
         if (file.size > 10 * 1024 * 1024) {
             alert('Размер файла не должен превышать 10MB');
             return;
         }
 
-        // Создание preview
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            setPreviewUrl(e.target?.result as string);
-        };
-        reader.readAsDataURL(file);
-
-        // Вызов callback
         if (onImageUpload) {
             onImageUpload(file);
         }
@@ -111,8 +101,6 @@ const UploadImageBox: React.FC<UploadImageBoxProps> = ({ onImageUpload }) => {
                         className="upload-icon"
                     />
                 )}
-
-
             </div>
 
             <h3 className="box1-title">

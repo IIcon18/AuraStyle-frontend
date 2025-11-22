@@ -28,20 +28,13 @@
     margin: 0;
 }
 
-.box2-title {
-    color: #E3FBA7;
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    margin: 0;
-}
-
 .analysis-content {
     padding: 0 20px 20px 20px;
     display: flex;
     flex-direction: column;
     gap: 25px;
     flex: 1;
+    justify-content: center;
 }
 
 .analysis-section {
@@ -131,8 +124,77 @@
     min-width: 70px;
 }
 
-/* УДАЛЯЕМ стили для внутренней кнопки сброса */
-/* .reset-button-internal и .reset-icon-internal */
+/* Стили для состояния загрузки */
+.analysis-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    height: 100%;
+    color: var(--primary-color);
+    text-align: center;
+    padding: 0 20px;
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(227, 251, 167, 0.2);
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1.5s linear infinite;
+    box-shadow: 0 0 20px rgba(227, 251, 167, 0.3);
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+        border-top-color: var(--primary-color);
+    }
+    25% {
+        border-top-color: #D0E890;
+    }
+    50% {
+        border-top-color: #B8D873;
+    }
+    75% {
+        border-top-color: #D0E890;
+    }
+    100% {
+        transform: rotate(360deg);
+        border-top-color: var(--primary-color);
+    }
+}
+
+.analysis-loading p {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.loading-subtitle {
+    font-size: 14px !important;
+    opacity: 0.8;
+    color: #888;
+    margin-top: 5px !important;
+}
+
+/* Стили для пустого состояния */
+.analysis-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    color: #888;
+    font-size: 16px;
+    padding: 0 20px;
+}
+
+.analysis-empty p {
+    margin: 0;
+}
 
 @media (max-width: 768px) {
     .style-analysis-box {
@@ -155,6 +217,16 @@
     .color-sample {
         width: 25px;
         height: 25px;
+    }
+
+    .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border-width: 3px;
+    }
+
+    .analysis-loading p {
+        font-size: 16px;
     }
 }
 
