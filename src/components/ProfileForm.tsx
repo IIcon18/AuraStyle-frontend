@@ -231,9 +231,10 @@ const ProfileForm: React.FC = () => {
                                     />
                                 )}
                                 <button
-                                    className="change-avatar"
+                                    className="change-avatar-btn"
                                     onClick={handleChangeAvatar}
                                     disabled={avatarLoading}
+                                    type="button"
                                 >
                                     <img src={PenIcon} alt="Изменить" className="pen1-icon" />
                                     {avatarLoading ? "Загрузка..." : "Изменить аватарку"}
